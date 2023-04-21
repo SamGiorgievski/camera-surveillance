@@ -2,6 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from './Button';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function BasicTextFields({ title, setPassword, setEmail, handleAction }) {
     return (
         <div>
@@ -34,6 +37,7 @@ export default function BasicTextFields({ title, setPassword, setEmail, handleAc
             </Box>
 
             <Button title={title} handleAction={handleAction} />
+            <ToastContainer />
         </div>
     );
 }
