@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Home.css';
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -7,6 +7,18 @@ import { storage} from '../firebase-config';
 
 
 export default function Home() {
+
+  // Audio
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  const audioContext = new AudioContext();
+  console.log(audioContext);
+
+  const videoRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const analyserNodeRef = useRef(null);
+  const frequencyDataRef = useRef(null);
+
 
   // Firebase
   const storageRef = ref(storage);
@@ -39,13 +51,18 @@ export default function Home() {
 
     useEffect(() => {
 
-      listAll(videosRef);
-
       // Get the download URL of the video
       getDownloadURL(testRef).then((url) => {
         // Set the video URL in state
         console.log(url);
         setVideoUrl(url);
+
+        // Audio
+        const video = videoRef.current;
+        console.log(video);
+
+        audioContextRef.current = audioContext;
+
       }).catch((error) => {
         // Handle any errors
         console.error(error);
@@ -59,10 +76,14 @@ export default function Home() {
 
           <button onClick={handleLogout}>Log out</button>
           <div className="video">
-            <p> Video </p>
+            <p> Camera 1 </p>
             {videoUrl && (
-              <video src={videoUrl} controls autoPlay />
+              <video controls autoPlay="" className="cam1" src={videoUrl} type="video/mp4" ref={videoRef}>
+                cam 1
+              </video>
+              
             )}
+            {/* <p>Volume: {volume}</p> */}
           </div>
         </div>
     )
